@@ -1,0 +1,63 @@
+/* paginauser.css (o al final de style.css) */
+.profile-container {
+    background-color: #fff;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    padding: 40px;
+    max-width: 600px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.profile-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #512da8;
+}
+
+.profile-container p {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #333;
+}
+
+.profile-container button {
+    background-color: #512da8;
+    color: #fff;
+    font-size: 12px;
+    padding: 10px 45px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile-container button:hover {
+    background-color: #5c6bc0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+.error-message {
+    background-color: #ffdddd;
+    border: 1px solid #ff0000;
+    color: #ff0000;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.debug-info {
+    background-color: #e6f3ff;
+    border: 1px solid #0066cc;
+    color: #0066cc;
+    padding: 10px;
+    margin-bottom: 20px;
+}

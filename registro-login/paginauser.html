@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | Debug</title>
+    <link rel="stylesheet" href="paginauserstyle.css">
+</head>
+<body>
+    <div id="error-container"></div>
+    <div id="debug-container"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUftZPcB5ByYTQXymHh2j2KP653XiAp7k",
+            authDomain: "que-comer-original.firebaseapp.com",
+            projectId: "que-comer-original",
+            storageBucket: "que-comer-original.firebasestorage.app",
+            messagingSenderId: "830996540548",
+            appId: "1:830996540548:web:4293371333ca3ef83666d1",
+            measurementId: "G-X3JRRTGGFF"
+        };
+
+        // Función para mostrar mensajes de error
+        function showError(message) {
+            const errorContainer = document.getElementById('error-container');
+            errorContainer.innerHTML = `
+                <div class="error-message">
+                    <h2>Error</h2>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        // Función para mostrar información de depuración
+        function showDebug(message) {
+            const debugContainer = document.getElementById('debug-container');
+            const debugEntry = document.createElement('div');
+            debugEntry.className = 'debug-info';
+            debugEntry.innerHTML = `
+                <p>${message}</p>
+            `;
+            debugContainer.appendChild(debugEntry);
+            console.log(message);
+        }
+
+        // Inicializar Firebase
+        try {
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+
+            // Verificar estado de autenticación
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    showDebug(`Usuario autenticado: ${user.email}`);
+                    
+                    // Crear contenido de perfil
+                    document.body.innerHTML += `
+                        <div>
+                            <h1>Perfil de Usuario</h1>
+                            <p><strong>Email:</strong> ${user.email}</p>
+                            <p><strong>UID:</strong> ${user.uid}</p>
+                            <button id="logout-btn">Cerrar Sesión</button>
+                        </div>
+                    `;
+
+                    // Añadir evento de logout
+                    document.getElementById('logout-btn').addEventListener('click', () => {
+                        signOut(auth).then(() => {
+                            window.location.href = 'index.html';
+                        }).catch((error) => {
+                            showError(`Error al cerrar sesión: ${error.message}`);
+                        });
+                    });
+                } else {
+                    showError('No hay usuario autenticado');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                }
+            });
+        } catch (error) {
+            showError(`Error de inicialización: ${error.message}`);
+        }
+    </script>
+</body>
+</html>
