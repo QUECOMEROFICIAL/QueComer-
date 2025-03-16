@@ -413,3 +413,25 @@ body {
     padding-right: 0;
     border-right: none;
 }
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    font-size: 24px;
+    color: #ddd;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+    color: #ffcc00;
+}

@@ -1,0 +1,12 @@
+// Simulación del pago con datos de prueba
+        handleSuccessfulPayment({
+            id: "FAKE_ORDER_ID_12345",
+            status: "COMPLETED",
+            purchase_units: [{
+                amount: { value: "25.00", currency_code: "USD" },
+                items: [
+                    { name: "Pizza", unit_amount: { value: "10.00", currency_code: "USD" }, quantity: "1" },
+                    { name: "Pasta", unit_amount: { value: "15.00", currency_code: "USD" }, quantity: "1" }
+                ]
+            }]
+        });

@@ -46,7 +46,7 @@
                         <a href="#conocenos" class="nav-item nav-link">Nosotros</a>
                         <a href="service.html" class="nav-item nav-link">Servicios</a>
                         <a href="/views/reservas.html" class="nav-item nav-link">Reservar</a>
-                        <a href="/views/menu-asiatico.html" class="nav-item nav-link">Menu</a>
+                        <a href="/views/menu-asiatico-asianmarket.html" class="nav-item nav-link">Hacer Pedido</a>
                         <div class="nav-item dropdown">
                         </div>
                         <a href="#footer" class="nav-item nav-link">Contacto</a>
@@ -570,6 +570,16 @@
                                     <input type="text" class="form-control border-primary" id="name" placeholder="Escribe tu nombre" required>
                                 </div>
                                 <div class="mb-3">
+                                    <label class="form-label text-muted fw-bold">Tu Valoración</label>
+                                    <div class="rating">
+                                        <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                                        <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                                        <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                                        <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                                        <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
                                     <label for="comment" class="form-label text-muted fw-bold">Tu Comentario</label>
                                     <textarea class="form-control border-primary" id="comment" rows="3" placeholder="Escribe tu comentario" required></textarea>
                                 </div>
@@ -577,10 +587,6 @@
                             </form>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-      
 <div class="container-fluid py-5">
     <div class="container">
         <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
@@ -687,7 +693,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
+    
         const firebaseConfig = {
             apiKey: "AIzaSyBUftZPcB5ByYTQXymHh2j2KP653XiAp7k",
             authDomain: "que-comer-original.firebaseapp.com",
@@ -697,22 +703,23 @@
             appId: "1:830996540548:web:4293371333ca3ef83666d1",
             measurementId: "G-X3JRRTGGFF"
         };
-
+    
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
     
         document.addEventListener("DOMContentLoaded", async function() {
             const testimonialForm = document.getElementById("testimonialForm");
             const testimonialContainer = document.querySelector(".owl-carousel");
+    
             async function loadTestimonials(restaurante) {
                 testimonialContainer.innerHTML = "";
     
                 const q = query(collection(db, "Comentarios"), where("restaurante", "==", restaurante));
-    
                 const querySnapshot = await getDocs(q);
     
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
+                    const ratingStars = "★".repeat(data.valoracion) + "☆".repeat(5 - data.valoracion);
                     const testimonialHTML = `
                         <div class="testimonial-item bg-transparent border rounded p-4">
                             <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
@@ -721,6 +728,7 @@
                                 <img class="img-fluid flex-shrink-0 rounded-circle" src="img/default-user.png" style="width: 50px; height: 50px;">
                                 <div class="ps-3">
                                     <h5 class="mb-1">${data.nombre}</h5>
+                                    <p class="text-warning">${ratingStars}</p>
                                 </div>
                             </div>
                         </div>
@@ -750,9 +758,10 @@
     
                 const name = document.getElementById("name").value;
                 const comment = document.getElementById("comment").value;
+                const rating = document.querySelector('input[name="rating"]:checked');
     
-                if (name.trim() === "" || comment.trim() === "") {
-                    alert("Por favor, completa todos los campos.");
+                if (name.trim() === "" || comment.trim() === "" || !rating) {
+                    alert("Por favor, completa todos los campos y selecciona una valoración.");
                     return;
                 }
     
@@ -760,6 +769,7 @@
                     await addDoc(collection(db, "Comentarios"), {
                         nombre: name,
                         comentario: comment,
+                        valoracion: parseInt(rating.value),
                         fecha: new Date(),
                         restaurante: restauranteSeleccionado 
                     });
@@ -775,7 +785,7 @@
                 }
             });
         });
-    </script>
+    </script>    
     
 </body>
 

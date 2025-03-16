@@ -194,7 +194,43 @@
             </div>
         </main>
     </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUftZPcB5ByYTQXymHh2j2KP653XiAp7k",
+            authDomain: "que-comer-original.firebaseapp.com",
+            projectId: "que-comer-original",
+            storageBucket: "que-comer-original.firebasestorage.app",
+            messagingSenderId: "830996540548",
+            appId: "1:830996540548:web:4293371333ca3ef83666d1",
+            measurementId: "G-X3JRRTGGFF"
+        };
 
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        async function handleSuccessfulPayment(details) {
+            const orderData = {
+                restaurante: "Assian Market", 
+                idPedido: details.id,  // ID del pedido de PayPal
+                cartItems: details.purchase_units[0].items,  // Los productos comprados
+                total: details.purchase_units[0].amount.value,  // Total del pedido
+                estado: details.status,  // Estado del pago (COMPLETED)
+                fecha: new Date()  // Fecha de la compra
+            };
+
+            try {
+                await addDoc(collection(db, "Pedidos"), orderData);
+                console.log("Pedido guardado con éxito en Firestore:", orderData);
+            } catch (error) {
+                console.error("Error al guardar el pedido:", error);
+            }
+            alert("¡Pago procesado con éxito! Gracias por tu compra.");
+        }
+
+        
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script src="/script/menu-dominicana.js"></script>
 </body>
